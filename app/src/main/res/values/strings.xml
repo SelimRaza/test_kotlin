@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Mbm</string>
+    <string name="prompt_email">Enter user name</string>
+    <string name="prompt_password">enter password</string>
+    <string name="action_sign_in_short">password</string>
+</resources>
