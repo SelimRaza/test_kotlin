@@ -15,7 +15,7 @@ import com.example.mbm.databinding.ItemLayoutBinding
 
 class MyAdapter : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     private var items: List<MenuResponse> = emptyList()
-
+    var onItemClickListener: ((MenuResponse) -> Unit) ?= null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
         return ViewHolder(view)
@@ -24,6 +24,10 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.bind(item)
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.invoke(items[position])
+        }
     }
 
     override fun getItemCount(): Int {
@@ -40,15 +44,47 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
         val menuImage: ImageView = itemView.findViewById(R.id.iv)
         val menuName: TextView = itemView.findViewById(R.id.menuName)
         fun bind(item: MenuResponse) {
-            //itemView.iv.text = item.name
+
             if (item.id == Constants.MENU_SYNC_ID) {
-                menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.ic_logo_sync))
+            menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.snc))
             }
             else if (item.id == Constants.MENU_ORDER_ID) {
                 menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.order3))
             }
-            else {
-                menuImage.setImageDrawable(null)
+            else if (item.id == Constants.MENU_ORDER_SR) {
+                menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.vansales))
+            }
+
+            else if (item.id == Constants.MENU_COLLECTION) {
+                menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.collection))
+            }
+
+            else if (item.id == Constants.MENU_DASHBOARD) {
+                menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.reportd))
+            }
+
+            else if (item.id == Constants.MENU_DASHBOARD_A) {
+                menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.reports3))
+            }
+            else if (item.id == Constants.MENU_WORK_NOTE ) {
+                menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.worknote))
+            }
+
+            else if (item.id == Constants.MENU_SEARCH ) {
+                menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.search3))
+            }
+            else if (item.id == Constants.MENU_DELIVERY ) {
+                menuImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.trip))
+            }
+
+
+            else if  (item.id == Constants.MENU_EXIT) {
+                menuImage.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.exit
+                    )
+                )
             }
             menuName.text = item.menuName
         }

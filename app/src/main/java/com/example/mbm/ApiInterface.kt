@@ -1,6 +1,7 @@
 package com.example.mbm
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.example.mbm.home.MenuResponse
 import com.example.mbm.home.ResponseHome
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -89,6 +90,20 @@ interface ApiInterface {
         @Field("ServiceName") service: String,
         @Field("Query") query: String,
     ): Call<ResponseHome>
+
+
+    @FormUrlEncoded
+    @POST("api/datasetjson")
+    fun getMenu(
+        @Field("Key") key: String,
+        @Field("Host") host: String,
+        @Field("Port") port: String,
+        @Field("User") user: String,
+        @Field("Password") pass: String,
+        @Field("ServiceName") service: String,
+        @Field("Query") query: String,
+    ): Call<List<MenuResponse>>
+
 //
 //    @FormUrlEncoded
 //    @POST("api/datasetjson")
