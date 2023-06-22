@@ -9,6 +9,7 @@ import com.example.mbm.ApiInterface
 import com.example.mbm.Constants
 import com.example.mbm.Order.OrderActivity
 import com.example.mbm.databinding.ActivityHome2Binding
+import com.example.mbm.outletEntry.view.OutletNavActivity
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,6 +47,14 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(i)
             }
         }
+
+        adapter.onItemClickListener = {
+            if (it.id == Constants.MENU_DELIVERY) {
+                val i = Intent(this, OutletNavActivity::class.java)
+                startActivity(i)
+            }
+        }
+
     }
 
 //    private fun getMenuData() {

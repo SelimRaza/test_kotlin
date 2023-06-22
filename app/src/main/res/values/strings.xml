@@ -3,4 +3,6 @@
     <string name="prompt_email">Enter user name</string>
     <string name="prompt_password">enter password</string>
     <string name="action_sign_in_short">password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_outlet_entry"
+    app:startDestination="@id/outletMenuFragment">
+
+
+    <fragment
+        android:id="@+id/outletEntryFragment"
+        android:name="com.example.mbm.outletEntry.view.OutletEntryFragment"
+        android:label="fragment_outlet_entry"
+        tools:layout="@layout/fragment_outlet_entry" />
+    <fragment
+        android:id="@+id/outletMenuFragment"
+        android:name="com.example.mbm.outletEntry.view.OutletMenuFragment"
+        android:label="fragment_outlet_menu"
+        tools:layout="@layout/fragment_outlet_menu" >
+        <action
+            android:id="@+id/action_outletMenuFragment_to_outletEntryFragment"
+            app:destination="@id/outletEntryFragment" />
+    </fragment>
+</navigation>
