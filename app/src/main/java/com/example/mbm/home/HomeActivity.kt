@@ -42,18 +42,18 @@ class HomeActivity : AppCompatActivity() {
         binding.rv.layoutManager = GridLayoutManager(this, 3)
         binding.rv.adapter = adapter
         adapter.onItemClickListener = {
+            Log.e("onItemClickListener", "setupRv: "+ it.id)
             if (it.id == Constants.MENU_ORDER_ID) {
                 val i = Intent(this,OrderActivity::class.java)
                 startActivity(i)
             }
-        }
-
-        adapter.onItemClickListener = {
-            if (it.id == Constants.MENU_DELIVERY) {
+            else if (it.id == Constants.MENU_DELIVERY) {
                 val i = Intent(this, OutletNavActivity::class.java)
                 startActivity(i)
             }
         }
+
+
 
     }
 

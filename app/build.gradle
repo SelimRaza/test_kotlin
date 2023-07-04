@@ -43,10 +43,18 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'androidx.camera:camera-core:1.2.3'
+    implementation 'androidx.camera:camera-lifecycle:1.0.2'
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+
+    //aws
+    implementation 'com.amazonaws:aws-android-sdk-core:2.22.1'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.22.1'
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.22.1'
 
     implementation 'com.android.volley:volley:1.2.1'
     testImplementation 'junit:junit:4.13.2'
@@ -69,6 +77,12 @@ dependencies {
     implementation "androidx.room:room-runtime:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
 
+    implementation 'com.github.anastr:speedviewlib:1.6.1'
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
+
+    //timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 
 
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.mbm.SharedPreferences
+import com.example.mbm.common.UploadDataWorker
 import com.example.mbm.databinding.ActivityMainBinding
 import com.example.mbm.home.HomeActivity
 
@@ -16,6 +17,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         mySharedPreferences= SharedPreferences(context = this)
+
+
+
         binding.emailSignInButton.setOnClickListener {
             mySharedPreferences.saveBaseUrl("http://193.123.66.243:5000/")
             val i = Intent(this, HomeActivity::class.java)
@@ -24,5 +28,11 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        UploadDataWorker.start(this)
     }
 }
