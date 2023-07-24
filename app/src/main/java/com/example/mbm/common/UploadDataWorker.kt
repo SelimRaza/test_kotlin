@@ -12,13 +12,9 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.CannedAccessControlList
+import com.example.mbm.MyApp
+import com.example.newtest.Image
 import com.google.gson.Gson
-import com.pranrflgroup.spro.common.api.ApiHistory
-import com.pranrflgroup.spro.common.api.ApiInterface
-import com.pranrflgroup.spro.common.db.dao.CommonDao
-import com.pranrflgroup.spro.common.db.dao.OrderDao
-import com.pranrflgroup.spro.dataStore.Image
-import com.pranrflgroup.spro.vanSales.model.VanTrip
 import timber.log.Timber
 import java.io.File
 
@@ -65,18 +61,28 @@ class UploadDataWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ct
     private fun image() {
 
         try {
-            val images = commonDao.getUnSyncImages()
+            val images = MyApp.db.imageDao().getAll()
 
             if (images.isNotEmpty()) {
                 for (image in images) {
-                    val file = File(image.path)
-                    Timber.e("fileUpload: path: " + image.path)
-                    if (file.exists()) {
-                        uploadAWS(file, image)
-                    } else {
-                        Timber.e("Data not found")
-                        commonDao.syncImage(image.id)
+                    if (image.isSync == 0) {
+                        val file = File(image.imagePath.replace("file://", ""))
+                        Timber.e("fileUpload: path: " + image.imagePath)
+                        if (file.exists()) {
+                            uploadAWS("test",file, image)
+                        } else {
+                            Timber.e("Data not found")
+                            MyApp.db.imageDao().updateSyncStatus(image.id)
+                        }
                     }
+                    else {
+                        val imagePath = image.imagePath.replace("file://", "")
+                        //val status = deleteFile(imagePath) //after taking manage external storage permission it will work
+                        Timber.e("fileUpload: deleting status: $status")
+
+
+                    }
+
                 }
             } else {
                 Timber.e("fileUpload: images is empty: ")
@@ -89,7 +95,20 @@ class UploadDataWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ct
     }
 
 
-    private fun uploadAWS(file: File, image: Image) {
+    private fun deleteFile(filePath: String): Boolean {
+        val file = File(filePath)
+        try {
+            if (file.exists()) {
+                return file.delete()
+            }
+        } catch (e: Exception) {
+            Timber.e("fileUpload: error: ${e.localizedMessage}")
+            e.printStackTrace()
+        }
+        return false
+    }
+
+    private fun uploadAWS(folderName: String, file: File, image: Image) {
         val s3: AmazonS3Client
         val credentials: BasicAWSCredentials
         val observer: TransferObserver
@@ -102,16 +121,17 @@ class UploadDataWorker(ctx: Context, workerParams: WorkerParameters) : Worker(ct
         val filePermission = CannedAccessControlList.PublicRead
         observer = transferUtility.upload(
             "prgfms",  //empty bucket name, included in endpoint
-            image.folderName + "/" + file.name,
+            folderName + "/" + file.name,
             file,  //a File object that you want to upload
             filePermission
         )
 
         observer.setTransferListener(object : TransferListener {
             override fun onStateChanged(id: Int, state: TransferState) {
-                if (TransferState.COMPLETED == observer.state) {
-                    commonDao.syncImage(image.id)
+                if (observer.state == TransferState.COMPLETED ) {
+                    MyApp.db.imageDao().updateSyncStatus(image.id)
                     status.postValue("end")
+
                 }
             }
 

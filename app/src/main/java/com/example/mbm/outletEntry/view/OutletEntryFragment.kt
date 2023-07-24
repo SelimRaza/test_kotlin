@@ -2,14 +2,13 @@ package com.example.mbm.outletEntry.view
 
 import android.Manifest
 import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +18,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.mbm.MyApp
 import com.example.mbm.common.UploadDataWorker
 import com.example.mbm.databinding.FragmentOutletEntryBinding
+import com.example.mbm.outletEntry.viewModel.OutletEntryVm
+import com.example.newtest.Image
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import timber.log.Timber
 import java.io.IOException
 import java.util.Locale
 
@@ -32,6 +35,9 @@ class OutletEntryFragment : Fragment() {
     private lateinit var binding: FragmentOutletEntryBinding
     private val key1 by lazy { arguments?.getInt(EXTRA_KEY1, 0) }
     private val key2 by lazy { arguments?.getInt(EXTRA_KEY2, 0) }
+    private val viewModel by lazy {
+        OutletEntryVm(MyApp.db.imageDao())
+    }
 
     companion object {
         const val EXTRA_KEY1 = "key1"
@@ -55,6 +61,15 @@ class OutletEntryFragment : Fragment() {
             } else {
                 // Location permission denied or user clicked on "Never ask again"
                 // Handle the scenario when the permission is denied
+            }
+        }
+
+    private val requestWriteExternalStoragePermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                // Permission granted, do your file read/write operations here.
+            } else {
+                // Permission denied, handle the case where the user denies the permission.
             }
         }
 
@@ -84,6 +99,14 @@ class OutletEntryFragment : Fragment() {
             requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
+        if (!hasWriteExternalStoragePermission()) {
+            requestWriteExternalStoragePermission()
+        }
+
+
+
+//        viewModel.getList()
+
     }
 
     private fun checkCameraPermission() {
@@ -102,9 +125,21 @@ class OutletEntryFragment : Fragment() {
         }
 
         binding.btnSubmit.setOnClickListener {
-            //saveImageToDb()
-            UploadDataWorker.start(requireContext())
+            saveImageToDb()
+
         }
+    }
+
+    private fun saveImageToDb() {
+        if (binding.iv.tag.toString().isEmpty()) {
+            return
+        }
+        val imageUri = binding.iv.tag.toString()
+        val img = Image()
+        img.imagePath = imageUri
+
+        viewModel.addRecord(img)
+        UploadDataWorker.start(requireContext())
     }
 
 
@@ -226,6 +261,7 @@ class OutletEntryFragment : Fragment() {
                 val mProfileUri = fileUri
                 binding.iv.setImageURI(fileUri)
                 binding.iv.tag = mProfileUri
+                Timber.e("mProfileUri")
 
             } else if (resultCode == ImagePicker.RESULT_ERROR) {
                 Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
@@ -302,6 +338,21 @@ class OutletEntryFragment : Fragment() {
 //        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 //        cameraLauncher.launch(cameraIntent)
 
+    }
+
+
+
+    private fun hasWriteExternalStoragePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestWriteExternalStoragePermission() {
+        requestWriteExternalStoragePermissionLauncher.launch(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
     }
 
 

@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.mbm.common.CustomDebugTree
-import com.example.newtest.AppDatabase
+import com.example.mbm.roomdatabase.AppDatabase
 import timber.log.Timber
 
 class MyApp: Application() {
@@ -14,7 +14,7 @@ class MyApp: Application() {
         super.onCreate()
         context = this
 
-        //initDb()
+
         initLogger()
     }
 
@@ -34,5 +34,11 @@ class MyApp: Application() {
 
     companion object {
         lateinit var context: Context
+        val db by lazy {
+            Room.databaseBuilder(
+                context,
+                AppDatabase::class.java, "my-database"
+            ).allowMainThreadQueries().build()
+        }
     }
 }

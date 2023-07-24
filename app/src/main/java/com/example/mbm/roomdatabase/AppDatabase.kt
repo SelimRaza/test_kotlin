@@ -1,9 +1,11 @@
-package com.example.newtest
+package com.example.mbm.roomdatabase
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.newtest.Image
+import com.example.newtest.ImageDao
 
-@Database(entities = [Person::class], version = 2)
+@Database(entities = [Image::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun personDao(): PersonDao
+    abstract fun imageDao(): ImageDao
 }

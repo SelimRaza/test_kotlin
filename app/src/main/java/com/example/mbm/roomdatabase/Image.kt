@@ -3,9 +3,10 @@ package com.example.newtest
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "persons")
-data class Person(
+@Entity(tableName = "images")
+data class Image(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String
+    var imagePath: String = "",
+    var isSync: Int = 0
 )
