@@ -16,6 +16,7 @@ import com.example.mbm.databinding.ItemLayoutBinding
 class MyAdapter : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     private var items: List<MenuResponse> = emptyList()
     var onItemClickListener: ((MenuResponse) -> Unit) ?= null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
         return ViewHolder(view)

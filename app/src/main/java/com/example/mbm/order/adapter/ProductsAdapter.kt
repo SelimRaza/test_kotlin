@@ -1,4 +1,4 @@
-package com.example.mbm.home
+package com.example.mbm.order.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +10,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.mbm.R
+import com.example.mbm.home.DataSelectionInterface
+import com.example.mbm.home.ResponseHome
 
-class MyAdapter2(private val dataList: MutableList<ResponseHome.ResponseItem>, private var dataSelection: DataSelectionInterface) : RecyclerView.Adapter<MyAdapter2.MyViewHolder>() {
+class ProductsAdapter(private var dataSelection: DataSelectionInterface) : RecyclerView.Adapter<ProductsAdapter.MyViewHolder>() {
 
+    private var dataList: MutableList<ResponseHome.ResponseItem> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_rv1, parent, false)
         return MyViewHolder(itemView)
+    }
+
+    fun submitData(list: MutableList<ResponseHome.ResponseItem>) {
+        dataList.clear()
+        dataList.addAll(list)
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -24,7 +33,7 @@ class MyAdapter2(private val dataList: MutableList<ResponseHome.ResponseItem>, p
         holder.tvName.text = data.iTEMNAME
         holder.tvPrice.text = data.dISTSALEPRICE
         Glide.with(holder.itemView)
-            .load(data.iTEMNAME)
+            .load(data.iTEMIMAGE)
             .centerCrop()
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.imageView)

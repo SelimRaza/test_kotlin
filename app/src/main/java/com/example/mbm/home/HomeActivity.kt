@@ -7,8 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mbm.ApiInterface
 import com.example.mbm.Constants
-import com.example.mbm.Order.OrderActivity
+import com.example.mbm.speedMeter.SpeedMeterActivity
 import com.example.mbm.databinding.ActivityHome2Binding
+import com.example.mbm.order.view.OrderActivity
 import com.example.mbm.outletEntry.view.OutletNavActivity
 import com.google.gson.Gson
 import retrofit2.Call
@@ -29,7 +30,7 @@ class HomeActivity : AppCompatActivity() {
         //getMenuData()
         getMenuData1()
        // adapter.updateItems(menuList)
-        getData()
+        //getData()
 
 
 
@@ -44,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
         adapter.onItemClickListener = {
             Log.e("onItemClickListener", "setupRv: "+ it.id)
             if (it.id == Constants.MENU_ORDER_ID) {
-                val i = Intent(this,OrderActivity::class.java)
+                val i = Intent(this, OrderActivity::class.java)
                 startActivity(i)
             }
             else if (it.id == Constants.MENU_DELIVERY) {
@@ -52,55 +53,8 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(i)
             }
         }
-
-
-
     }
 
-//    private fun getMenuData() {
-//        menuList.add(MenuResponse(1,"Sync"))
-//        menuList.add(MenuResponse(2,"Order"))
-//        menuList.add(MenuResponse(3,"Attendance"))
-////        menuList.add(MenuResponse(4,"Work Note"))
-////        menuList.add(MenuResponse(5,"Collection"))
-//
-//        adapter.updateItems(menuList)
-//    }
-
-    private fun getData() {
-        ApiInterface.create()
-            .getData2(
-                "API",
-                "193.123.66.243",
-                "1521",
-                "IKRAM",
-                "q",
-                "UAE",
-                "Select ITEM_ID,'https://images.sihirbox.com/bdp/Master/item/624ebf5d3a0b8.jpg' ITEM_NAME,DIST_SALE_PRICE from ppl1.item_master where item_name like '%2500%'"
-            )
-            .enqueue(object : Callback<ResponseHome> {
-                override fun onResponse(
-                    call: Call<ResponseHome>,
-                    response: retrofit2.Response<ResponseHome>
-                ) {
-//                    list.clear()
-//                    if (response.body() != null) {
-//                        list.addAll(response.body()!!)
-//                        val adapter = MyAdapter2(list, this@HomeActivity)
-//                        binding.rv1.adapter = adapter
-//                    }
-                    Log.e("data221", "onResponse: $response")
-                    Log.e("data558", "onResponse: ${response.body()}" )
-                    val gson = Gson()
-                    val json = gson.toJson(response.body())
-                    Log.e("data558", "onResponse: $json")
-                }
-
-                override fun onFailure(call: Call<ResponseHome>, t: Throwable) {
-
-                }
-            })
-    }
 
 
     private fun getMenuData1() {

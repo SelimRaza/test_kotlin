@@ -9,6 +9,9 @@ class ResponseHome : ArrayList<ResponseHome.ResponseItem>() {
         val iTEMID: String,
         @SerializedName("ITEM_NAME")
         val iTEMNAME: String,
+        @SerializedName("ITEM_IMAGE")
+        val iTEMIMAGE: String,
+
         var isChecked: Boolean = false
 //        var focData: FocData
     )

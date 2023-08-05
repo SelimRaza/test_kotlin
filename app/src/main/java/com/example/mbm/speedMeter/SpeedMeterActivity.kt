@@ -1,4 +1,4 @@
-package com.example.mbm.Order
+package com.example.mbm.speedMeter
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -8,23 +8,18 @@ import android.location.LocationListener
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import androidx.core.app.ActivityCompat
-import com.example.mbm.R
-import com.example.mbm.databinding.ActivityOrderBinding
+import com.example.mbm.databinding.ActivitySpeedMeterBinding
 
-class OrderActivity : AppCompatActivity() {
+class SpeedMeterActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityOrderBinding
+    private lateinit var binding: ActivitySpeedMeterBinding
     private lateinit var locationManager: LocationManager
     private lateinit var locationListener: LocationListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityOrderBinding.inflate(layoutInflater)
+        binding = ActivitySpeedMeterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
