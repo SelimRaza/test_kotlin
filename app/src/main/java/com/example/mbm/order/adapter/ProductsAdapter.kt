@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -55,6 +56,12 @@ class ProductsAdapter(private var dataSelection: DataSelectionInterface) : Recyc
             }
             notifyDataSetChanged()
         }
+
+        if (data.isChecked) {
+           holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.green))
+        }
+        else  holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.white))
+
         holder.imageView.setOnClickListener {
             Toast.makeText(holder.itemView.context, data.iTEMNAME, Toast.LENGTH_SHORT).show()
         }

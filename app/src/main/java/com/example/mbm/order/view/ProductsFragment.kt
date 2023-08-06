@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MenuItem.OnMenuItemClickListener
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mbm.R
+import com.example.mbm.common.toast
 import com.example.mbm.databinding.FragmentProductsBinding
 import com.example.mbm.home.DataSelectionInterface
 import com.example.mbm.home.ResponseHome
@@ -49,11 +52,22 @@ class ProductsFragment : Fragment(), DataSelectionInterface {
     }
 
     override fun onSelect(obj: ResponseHome.ResponseItem) {
+        viewModel.cartList.add(obj)
+        "Successfully added to cart".toast()
 
     }
 
     override fun onRemove(obj: ResponseHome.ResponseItem) {
+        val tempList = mutableListOf<ResponseHome.ResponseItem>()
+        for (item in viewModel.cartList) {
+            if(item.iTEMID != obj.iTEMID) {
+                tempList.add(item)
+            }
+        }
 
+        viewModel.cartList.clear()
+        viewModel.cartList.addAll(tempList)
+        "Removed from cart".toast()
     }
 
 
@@ -61,6 +75,7 @@ class ProductsFragment : Fragment(), DataSelectionInterface {
         inflater.inflate(R.menu.menu_search, menu)
 
         val searchItem: MenuItem = menu.findItem(R.id.action_search)
+        val cartItem: MenuItem = menu.findItem(R.id.action_cart)
         val searchView = searchItem.actionView as SearchView
 
         // Set up the SearchView
@@ -76,6 +91,11 @@ class ProductsFragment : Fragment(), DataSelectionInterface {
                 return true
             }
         })
+
+        cartItem.setOnMenuItemClickListener {
+            findNavController().navigate(R.id.action_productsFragment_to_cartFragment)
+            false
+        }
 
         super.onCreateOptionsMenu(menu, inflater)
     }

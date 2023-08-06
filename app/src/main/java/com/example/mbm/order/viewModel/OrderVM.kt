@@ -11,9 +11,10 @@ import retrofit2.Callback
 
 class OrderVM : ViewModel() {
     lateinit var itemsLiveData: MutableLiveData<List<ResponseHome.ResponseItem>>
-
+    lateinit var cartList: MutableList<ResponseHome.ResponseItem>
     fun init() {
         itemsLiveData = MutableLiveData()
+        cartList = ArrayList()
     }
 
     fun getData() {
