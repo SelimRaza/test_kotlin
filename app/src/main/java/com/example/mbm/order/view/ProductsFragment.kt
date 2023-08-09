@@ -47,7 +47,7 @@ class ProductsFragment : Fragment(), DataSelectionInterface {
 
     private fun setupRv() {
         binding.rv.layoutManager = LinearLayoutManager(requireContext())
-        adapter = ProductsAdapter(this)
+        adapter = ProductsAdapter(this, viewModel)
         binding.rv.adapter = adapter
     }
 

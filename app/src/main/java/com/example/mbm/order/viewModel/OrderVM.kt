@@ -26,7 +26,7 @@ class OrderVM : ViewModel() {
                 "IKRAM",
                 "q",
                 "UAE",
-                "Select ITEM_ID,'https://images.sihirbox.com/bdp/Master/item/624ebf5d3a0b8.jpg' ITEM_IMAGE, ITEM_NAME,DIST_SALE_PRICE from ppl1.item_master where item_name like '%2500%'"
+                "Select DISTINCT ITEM_ID,'https://images.sihirbox.com/bdp/Master/item/624ebf5d3a0b8.jpg' ITEM_IMAGE, ITEM_NAME,DIST_SALE_PRICE from ppl1.item_master where item_name like '%2500%'"
             )
             .enqueue(object : Callback<ResponseHome> {
                 override fun onResponse(
@@ -40,6 +40,10 @@ class OrderVM : ViewModel() {
 
                 }
             })
+    }
+
+    fun updateItemsList(newList: List<ResponseHome.ResponseItem>) {
+        itemsLiveData.value = newList
     }
 
 }

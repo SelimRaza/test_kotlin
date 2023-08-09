@@ -17,7 +17,7 @@ import com.example.mbm.order.viewModel.OrderVM
 import java.util.Collections
 
 
-class ProductsAdapter(private var dataSelection: DataSelectionInterface, var viewModel: OrderVM) : RecyclerView.Adapter<ProductsAdapter.MyViewHolder>() {
+class CartAdapter(private var dataSelection: DataSelectionInterface, viewModel : OrderVM) : RecyclerView.Adapter<CartAdapter.MyViewHolder>() {
 
     var dataList: MutableList<ResponseHome.ResponseItem> = ArrayList()
     private val deletedItems: MutableList<DeletedItem> = ArrayList()
@@ -44,15 +44,10 @@ class ProductsAdapter(private var dataSelection: DataSelectionInterface, var vie
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.imageView)
 
-        val isExistInCart = viewModel.cartList.find { it.iTEMID == data.iTEMID }
-        if (isExistInCart != null) {
-            data.isChecked = true
+        if (data.isChecked) {
             holder.ivCheck.visibility = View.VISIBLE
         }
-        else {
-            data.isChecked = false
-            holder.ivCheck.visibility = View.GONE
-        }
+        else holder.ivCheck.visibility = View.GONE
 
         holder.itemView.setOnClickListener {
             remove(position)
@@ -99,6 +94,7 @@ class ProductsAdapter(private var dataSelection: DataSelectionInterface, var vie
         deletedItems.add(DeletedItem(pos, deletedOrderProduct))
         dataList.removeAt(pos)
         notifyItemRemoved(pos)
+        dataSelection.onRemove(deletedOrderProduct)
     }
 
     fun restoreItem() {
